@@ -16,6 +16,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var btnHitung: Button
     private lateinit var tvHasil: TextView
 
+    //savestate biar pas dirotate ga hilang hasilnya
+    companion object {
+        private const val STATE_RESULT = "state_result"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,6 +32,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         tvHasil = findViewById(R.id.tv_hasil)
         btnHitung = findViewById(R.id.btn_hitung)
         btnHitung.setOnClickListener(this)
+
+        if (savedInstanceState != null) {
+            val hasil = savedInstanceState.getString(STATE_RESULT)
+            tvHasil.text = hasil
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(STATE_RESULT, tvHasil.text.toString())
     }
 
     override fun onClick(view: View?) {
